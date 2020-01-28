@@ -1,0 +1,35 @@
+{
+  "name": "TODO-REPO-NAME",
+  "version": "1.0.0",
+  "description": "TODO-REPO-DESCRIPTION",
+  "main": "./lib/index.js",
+  "scripts": {
+    "build": "rimraf lib  &&  tsc",
+    "build:publish": "npm run build  &&  npm run lint  &&  tsc --sourceMap false",
+    "lint": "tslint -p ./tsconfig.json",
+    "prepublishOnly": "npm run build:publish  &&  npm run test",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "TODO-GIT-REPO-GIT+FORMAT"
+  },
+  "keywords": [
+    "TODO-NPMJS-KEYWORD"
+  ],
+  "author": "TODO-AUTHOR",
+  "license": "TODO-LICENSE",
+  "devDependencies": {
+    "@types/jest": "24.0.15",
+    "@types/node": "12.12.25",
+    "jest": "25.1.0",
+    "nyc": "13.0.1",
+    "ts-jest": "25.0.0",
+    "tslint": "5.20.1",
+    "typescript": "3.7.5"
+  },
+  "bugs": {
+    "url": "TODO-GIT-REPO-GIT+FORMAT/issues"
+  },
+  "homepage": "TODO-GIT-REPO-GIT+FORMAT#readme"
+}
