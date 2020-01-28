@@ -1,7 +1,7 @@
 {
-  "name": "TODO-REPO-NAME",
-  "version": "1.0.0",
-  "description": "TODO-REPO-DESCRIPTION",
+  "name": "array-slice-match",
+  "version": "0.0.0",
+  "description": "Extra method for Array (slice by match)",
   "main": "./lib/index.js",
   "scripts": {
     "build": "rimraf lib  &&  tsc",
@@ -20,6 +20,7 @@
   "author": "TODO-AUTHOR",
   "license": "TODO-LICENSE",
   "devDependencies": {
+    "@types/deep-equal": "1.0.1",
     "@types/jest": "24.0.15",
     "@types/node": "12.12.25",
     "jest": "25.1.0",
@@ -31,5 +32,9 @@
   "bugs": {
     "url": "TODO-GIT-REPO-GIT+FORMAT/issues"
   },
-  "homepage": "TODO-GIT-REPO-GIT+FORMAT#readme"
+  "homepage": "TODO-GIT-REPO-GIT+FORMAT#readme",
+  "dependencies": {
+    "deep-equal": "2.0.1",
+    "deep-match": "^1.0.0"
+  }
 }
