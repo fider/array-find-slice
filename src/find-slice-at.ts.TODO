@@ -1,0 +1,33 @@
+import deepEqual = require('deep-equal');
+import { DeepPartial } from 'tsdef';
+import deepMatch from 'deep-match2';
+
+// ================================================================
+//      Type definition
+// ================================================================
+declare global {
+
+    namespace Array {
+
+        export type XFindSliceAt_Opts = {
+            fullMatch?: boolean,
+        }
+    }
+
+    interface Array<T> {
+        /**
+         * default `opts`
+         * - `fullMatch:  false`
+         */
+        xFindSlice(match: Array<Partial<T>>, opts?: Array.XFindSliceAt_Opts): null | Array<T>;
+    }
+}
+
+// ================================================================
+//      Implementation
+// ================================================================
+
+Array.prototype.xFindSliceAt = function xFindSlice<T>(this: T[], match: Partial<T>[], opts: Array.XFindSliceAt_Opts = {}): null | T[] {
+    const { fullMatch = true } = opts;
+
+}

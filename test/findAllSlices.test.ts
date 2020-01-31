@@ -1,105 +1,125 @@
 import '../src/index';
-import { inspect } from 'util';
-
+import { defineArrayTests } from './helper';
 
 
 const data_findAllSlices: {
             source: any[],
             match: any[],
             opts: Array.XFindAllSlices_Opts,
-            expected: any[][]
+            expected: any[][] | Error
         }[] = [
-
     {
         source:   [],
         match:    [],
+        opts:     {},
+        expected: new Error(`Array.prototype.xFindAllSlices(match). Invalid argument 0. Expected that "match" array length is greater than 0.`),
+    },
+    {
+        source:   [],
+        match:    [2, 4, 6],
         opts:     {},
         expected: []
     },
     {
-        source:   [],
-        match:    [],
+        source:   [1, 2, 3, 4, 5],
+        match:    [1, 2, 3],
         opts:     {},
-        expected: []
+        expected: [[1, 2, 3]],
     },
     {
-        source:   [],
-        match:    [],
+        source:   [1, 2, 3, 4, 5],
+        match:    [3, 4, 5],
         opts:     {},
-        expected: []
+        expected: [[3, 4, 5]],
     },
     {
-        source:   [],
-        match:    [],
+        source:   [1, 2, 3, 4, 1, 2, 3, 4],
+        match:    [2, 3],
         opts:     {},
-        expected: []
+        expected: [[2, 3], [2, 3]],
     },
     {
-        source:   [],
-        match:    [],
+        source:   [1, 1, 1, 1, 1],
+        match:    [1, 1],
         opts:     {},
-        expected: []
+        expected: [[1, 1], [1, 1]],
     },
-    {
-        source:   [],
-        match:    [],
+    { // No matches
+        source:   [
+            { n: 0, a: [{ a1: ['a', 'X'] }, { a2: ['b', 'c'] }], b: [                                        ]},
+            { n: 1, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['X', 'z'] }  ]},
+            { n: 2, a: [{ a1: ['a', 'X'] }, { a2: ['e', 'f'] }], b: [{ b1: ['c', 'd'] }, { b2: ['b', 'e'] }  ]},
+            { n: 3, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['b', 'Z'] }  ]}
+        ],
+        match:    [
+            {       a: [{ a1: [undefined, 'X'] }] },
+            {                                                    b: [undefined,          { b2: [undefined, 'X'] }] },
+        ],
         opts:     {},
-        expected: []
+        expected: [],
     },
-    {
-        source:   [],
-        match:    [],
+    { // Match first pair only
+        source:   [
+            { n: 0, a: [{ a1: ['a', 'X'] }, { a2: ['b', 'c'] }], b: [                                        ]},
+            { n: 1, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['a', 'X'] }  ]},
+            { n: 2, a: [{ a1: ['a', 'X'] }, { a2: ['e', 'f'] }], b: [{ b1: ['c', 'd'] }, { b2: ['b', 'e'] }  ]},
+            { n: 3, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['b', 'Z'] }  ]}
+        ],
+        match:    [
+            {       a: [{ a1: [undefined, 'X'] }] },
+            {                                                    b: [undefined,          { b2: [undefined, 'X'] }] },
+        ],
         opts:     {},
-        expected: []
+        expected: [
+            [
+                { n: 0, a: [{ a1: ['a', 'X'] }, { a2: ['b', 'c'] }], b: [                                        ]},
+                { n: 1, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['a', 'X'] }  ]},
+            ],
+        ],
     },
-    {
-        source:   [],
-        match:    [],
+    { // Match second pari only
+        source:   [
+            { n: 0, a: [{ a1: ['a', 'X'] }, { a2: ['b', 'c'] }], b: [                                        ]},
+            { n: 1, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['X', 'b'] }  ]},
+            { n: 2, a: [{ a1: ['a', 'X'] }, { a2: ['e', 'f'] }], b: [{ b1: ['c', 'd'] }, { b2: ['b', 'e'] }  ]},
+            { n: 3, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['b', 'X'] }  ]}
+        ],
+        match:    [
+            {       a: [{ a1: [undefined, 'X'] }] },
+            {                                                    b: [undefined,          { b2: [undefined, 'X'] }] },
+        ],
         opts:     {},
-        expected: []
+        expected: [
+            [
+                { n: 2, a: [{ a1: ['a', 'X'] }, { a2: ['e', 'f'] }], b: [{ b1: ['c', 'd'] }, { b2: ['b', 'e'] }  ]},
+                { n: 3, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['b', 'X'] }  ]}
+            ]
+        ],
     },
-    {
-        source:   [],
-        match:    [],
+    { // Match 2 pairs
+        source:   [
+            { n: 0, a: [{ a1: ['a', 'X'] }, { a2: ['b', 'c'] }], b: [                                        ]},
+            { n: 1, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['a', 'X'] }  ]},
+            { n: 2, a: [{ a1: ['a', 'X'] }, { a2: ['e', 'f'] }], b: [{ b1: ['c', 'd'] }, { b2: ['b', 'e'] }  ]},
+            { n: 3, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['b', 'X'] }  ]}
+        ],
+        match:    [
+            {       a: [{ a1: [undefined, 'X'] }] },
+            {                                                    b: [undefined,          { b2: [undefined, 'X'] }] },
+        ],
         opts:     {},
-        expected: []
-    },
-    {
-        source:   [],
-        match:    [],
-        opts:     {},
-        expected: []
-    },
-    {
-        source:   [],
-        match:    [],
-        opts:     {},
-        expected: []
-    },
-    {
-        source:   [],
-        match:    [],
-        opts:     {},
-        expected: []
-    },
-    {
-        source:   [],
-        match:    [],
-        opts:     {},
-        expected: []
+        expected: [
+            [
+                { n: 0, a: [{ a1: ['a', 'X'] }, { a2: ['b', 'c'] }], b: [                                        ]},
+                { n: 1, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['a', 'X'] }  ]},
+            ],
+            [
+                { n: 2, a: [{ a1: ['a', 'X'] }, { a2: ['e', 'f'] }], b: [{ b1: ['c', 'd'] }, { b2: ['b', 'e'] }  ]},
+                { n: 3, a: [                                      ], b: [{ b1: ['j', 'b'] }, { b2: ['b', 'X'] }  ]},
+            ]
+        ],
     },
 ];
 
 
-
-for (let [testNo, t] of data_findAllSlices.entries()) {
-    test_findAllSlices(testNo, t.source, t.match, t.opts, t.expected);
-}
-
-
-
-function test_findAllSlices(testNo: number, source: any[], match: any[], opts: Array.XFindAllSlices_Opts, expected: null | any[]) {
-    test(`  Find slice test no ${testNo}\n  Source:   ${inspect(source)}\n  Match:    ${inspect(match)}\n  Opts:     ${inspect(opts)}\n  Expected: ${inspect(expected)}`, () => {
-        expect( source.xFindAllSlices(match, opts) ).toStrictEqual(expected as any);
-    });
-}
+defineArrayTests('xFindAllSlices', data_findAllSlices);

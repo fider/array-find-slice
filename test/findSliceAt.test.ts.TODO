@@ -1,0 +1,21 @@
+import '../src/index';
+import { inspect } from 'util';
+
+
+const data_findSliceAt: {
+            source: any[],
+            match: any[],
+            opts: Array.XFindSliceAt_Opts,
+            expected: null | any[] | Error
+        }[] = [
+
+    {
+        source:   [],
+        match:    [],
+        opts:     {},
+        expected: []
+    },
+];
+
+
+defineArrayTests('xFindSliceAt', data_findSliceAt);

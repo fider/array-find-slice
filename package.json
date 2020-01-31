@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf lib  &&  tsc",
     "build:publish": "npm run build  &&  npm run lint  &&  tsc --sourceMap false",
-    "lint": "tslint -p ./tsconfig.json",
+    "lint": "tslint -p ./tsconfig.json  &&  tslint ./test/**/*.ts",
     "prepublishOnly": "npm run build:publish  &&  npm run test",
     "test": "jest"
   },
@@ -23,9 +23,11 @@
     "@types/deep-equal": "1.0.1",
     "@types/jest": "24.0.15",
     "@types/node": "12.12.25",
+    "deep-match2": "^1.0.1",
     "jest": "25.1.0",
     "nyc": "13.0.1",
     "ts-jest": "25.0.0",
+    "tsdef": "0.0.13",
     "tslint": "5.20.1",
     "typescript": "3.7.5"
   },
